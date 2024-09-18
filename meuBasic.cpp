@@ -225,23 +225,7 @@ bool TratarGoto(const vector<Token>& tokens_classificados, size_t& i) {
         //cout << "Label " << label_destino << " não encontrada!" << endl;
         return false;
     }
-    /*
-    if (i + 1 < tokens_classificados.size() && tokens_classificados[i + 1].tipo == LABEL) {
-        string label_destino = tokens_classificados[i + 1].valor;
-        if (tabela_labels.find(label_destino) != tabela_labels.end()) {
-            i = tabela_labels[label_destino] - 1 ;
-            //DEPURAÇÂOOOOOOOOOO
-            cout << "GOTO encontrado, pulando para a linha: " << i << endl;  
-            return true;
-        } else {
-            cout << "teste Essa label não ta aqui nn: " << label_destino;
-            return false;
-        }
-    }else {
-        return false;
-    }
-    */
-    //return false;
+    
 }
 
 /*A análise das operações aritméticas vai ser feita com lógica de pilhas*/
@@ -418,12 +402,7 @@ void processarTokens(const vector<Token>& tokens_classificados){
         //Processar o comando GOTO
         // Debug: exibir o valor do índice e do token atual
         //cout << "Processando índice: " << i << ", Token: " << tokens_classificados[i].valor << endl;
-        /*
-        if (tokens_classificados[i].tipo == COMANDO && tokens_classificados[i].valor == "GOTO") {
-            TratarGoto(tokens_classificados, i);
-            continue;
-        } 
-        */
+        
        if (tokens_classificados[i].tipo == COMANDO && tokens_classificados[i].valor == "GOTO") {
             if (TratarGoto(tokens_classificados, i)) {
                 //DEPURAÇÃOOOO
@@ -557,12 +536,6 @@ void processarTokens(const vector<Token>& tokens_classificados){
             //break;
         }
         
-
-        
-        /* Incrementa i ao final de cada iteração, exceto quando tratado dentro do bloco específico*/
-        //if (tokens_classificados[i].tipo != COMANDO || tokens_classificados[i].valor != "GOTO") {
-          //  i++;
-        //}
         i++;
     }
 }
