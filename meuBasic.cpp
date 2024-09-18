@@ -10,7 +10,7 @@ using namespace std;
 /*
 Como vou tratar a situação do operador GOTO?
 -> Como o arquivo .txt está sendo carregado para um buffer, podemos depois ir lendo esse buffer 
-até encontrar uma label, quando encontrado, iremos inserir em uma tabela qual a label e qual o valor do buffer 
+até encontrar uma label, quando encontrado, iremos inserir em uma tabela qual a label e qual o valor de linha 
 onde está ela. Assim, quando surgir um 'goto _N°_', ele vai verificar se esse número está na tabela.
 PENSAR EM COMO MELHORAR ESSA LÓGICA NO SENTIDO DE EFICIÊNCIA!!!
 Vou utilizar o <map> kk
