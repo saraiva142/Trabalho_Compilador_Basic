@@ -36,8 +36,8 @@ struct Simbolo {
 
 vector<Tipo> meus_tokens;
 
-unordered_map<string, Simbolo> tabela_simbolos; // Tabela de símbolos
-unordered_map<string, size_t> tabela_labels; // Tabela de labels para o goto
+unordered_map<string, Simbolo> tabela_simbolos; 
+unordered_map<string, size_t> tabela_labels; 
 
 
 /*Funções auxiliares booleanas com um regex para avaliarmos se temos algum tipo*/
@@ -73,7 +73,7 @@ bool Operador(string token) {
 }
 
 bool StringLiteral(string token) {
-    return regex_match(token, regex("\"(\\.|[^\"])*\"")); // Permite caracteres 
+    return regex_match(token, regex("\"(\\.|[^\"])*\""));  
 }
 
 Tipo classificaTipo(string token, bool inicio_linha) {
@@ -111,7 +111,7 @@ string tipoParaString(Tipo tipo) {
     }
 }
 
-/*Vamos criar uma função para dividir todo nosso buffer em tokens de acordo com os espaços em branco
+/*Função para dividir todo nosso buffer em tokens de acordo com os espaços em branco
 Para que podemos classificar cada token*/
 vector<string> dividirEmTokens(const string& buffer){
     vector<string> tokens;
@@ -180,7 +180,7 @@ void preencherVetorTokens(const vector<string>& tokens, vector<Token>& tokens_cl
 /*Função para buscar valor de uma variável ou número*/
 double buscarValor(const string& token) {
     if (Numero(token)) {
-        return stod(token); // Converte o token em um número
+        return stod(token); 
     } else if (tabela_simbolos.find(token) != tabela_simbolos.end()) {
         /*Busca o valor da variável*/
         return stod(tabela_simbolos[token].valor); // Converte o valor da variável em número
@@ -228,7 +228,8 @@ bool TratarGoto(const vector<Token>& tokens_classificados, size_t& i) {
     
 }
 
-/*A análise das operações aritméticas vai ser feita com lógica de pilhas*/
+/*A análise das operações aritméticas vai ser feita com lógica de pilhas
+Até pq estamos tratando de cfg */
 double AnaliseEXPAritmetica(const vector<Token>& tokens, size_t inicio, size_t final) {
     stack<double> valores;
     stack<char> operadores;
@@ -286,7 +287,7 @@ double AnaliseEXPAritmetica(const vector<Token>& tokens, size_t inicio, size_t f
 }
 
 void AnalisaIF(const vector<Token>& tokens_classificados, size_t& i) {
-    /*Certifique-se de que o índice 'i' esteja no comando IF*/
+    /*Certificando que o índice 'i' esteja no comando IF*/
     if (tokens_classificados[i].tipo != COMANDO || !ComandoIF(tokens_classificados[i].valor)) {
         cout << "Erro" << endl;
         return;
@@ -325,7 +326,7 @@ void AnalisaIF(const vector<Token>& tokens_classificados, size_t& i) {
     //cout << "Resultado da condicao: " << (condicao ? "Verdadeiro" : "Falso") << endl;
 
     if (condicao) {
-        /*Se a condição for verdadeira, execute o comando após o THEN*/
+        /*Se a condição for verdadeira -> executar o comando que está depois do THEN*/
         size_t j = i + 4; // O próximo token após a condição
 
         while (j < tokens_classificados.size() && tokens_classificados[j].valor != "THEN") {
@@ -333,12 +334,12 @@ void AnalisaIF(const vector<Token>& tokens_classificados, size_t& i) {
         }
 
         if (j < tokens_classificados.size() && tokens_classificados[j].valor == "THEN") {
-            /*Avança para o próximo comando após THEN*/
+            /*Avança para o próximo comando depois THEN*/
             j++;
 
-            /*Verifica o tipo de comando após o THEN*/
+            /*Verifica o tipo de comando que está depois do THEN*/
             if (tokens_classificados[j].valor == "GOTO") {
-                /*Processar GOTO*/
+                /*Chamar o GOTO > Funcionando :)*/
                 if (!TratarGoto(tokens_classificados, j)) {
                     cout << "Erro" << endl;
                 }
@@ -356,7 +357,8 @@ void AnalisaIF(const vector<Token>& tokens_classificados, size_t& i) {
             cout << "Erro" << endl;
         }
     } else {
-        /*Se a condição for falsa, pular a parte após o THEN, mas continuar nas próximas linhas*/
+        /*Se a condição for falsa, pular a parte após o THEN, mas continuar nas próximas linhas
+        Isso está bugadooooo resolver !!*/
         //cout << "Condicao falsa, ignorando o restante da linha." << endl;
 
         /*Procurar pelo THEN e ignorar o que vem depois dele*/
@@ -440,7 +442,8 @@ void processarTokens(const vector<Token>& tokens_classificados){
                         conteudo += tokens_classificados[j].valor;
                         conteudo = conteudo.substr(1, conteudo.size() - 2);  // Remove as aspas
                         cout << conteudo << endl;
-                        i = j;  // Avança o índice para pular todos os tokens da string
+                        // Avança o índice para pular todos os tokens da string
+                        i = j;  
                     } else {
                         cout << "Erro";
                     }
